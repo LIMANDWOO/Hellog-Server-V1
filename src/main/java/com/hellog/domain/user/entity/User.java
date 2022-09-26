@@ -13,7 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Entity(name = "user")
+@Entity
+@Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {

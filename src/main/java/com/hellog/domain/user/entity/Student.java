@@ -10,7 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.Year;
 
-@Entity(name = "student")
+@Entity
+@Table(name = "student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
