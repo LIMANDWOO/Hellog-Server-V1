@@ -1,5 +1,6 @@
 package com.hellog.domain.posting.entity;
 
+import com.hellog.domain.posting.exception.PostingForbiddenException;
 import com.hellog.domain.posting.type.PostingStatus;
 import com.hellog.domain.user.entity.Student;
 import lombok.AccessLevel;
@@ -53,6 +54,23 @@ public class Posting {
     @Column(nullable = false)
     @Size(max = 255)
     private String summary;
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount--;
+    }
+
+    public void updatePosting(String title, String content, String summary, Student student) {
+        if (!this.student.equals(student)) {
+            throw PostingForbiddenException.EXCEPTION;
+        }
+        this.title = title;
+        this.content = content;
+        this.summary = summary;
+    }
 
     @Builder
     public Posting(String title, String content, String summary, Student student) {
