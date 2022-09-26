@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class BannedUserException extends CustomException {
 
-    public static final BannedUserException EXCEPTION = new BannedUserException();
+    public static final CustomException EXCEPTION = new BannedUserException();
 
     private BannedUserException() {
         super(HttpStatus.FORBIDDEN, "사용 정지된 유저입니다.");
