@@ -1,7 +1,7 @@
 package com.hellog.domain.user.service;
 
-import com.hellog.domain.user.repository.StudentRepository;
-import com.hellog.domain.user.repository.UserRepository;
+import com.hellog.domain.user.domain.repository.StudentRepository;
+import com.hellog.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +11,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
+
+    public
 }

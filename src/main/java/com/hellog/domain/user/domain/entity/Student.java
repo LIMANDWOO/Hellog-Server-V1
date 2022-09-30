@@ -1,4 +1,4 @@
-package com.hellog.domain.user.entity;
+package com.hellog.domain.user.domain.entity;
 
 import com.hellog.domain.user.exception.StudentGeneratedInvalidException;
 import lombok.AccessLevel;
@@ -34,6 +34,15 @@ public class Student {
     @JoinColumn(name = "fk_user_id")
     private User user;
 
+    private void checkValidGeneration(int generation) {
+
+        int year = Year.now().getValue();
+
+        if(2015 + generation > year) {
+            throw StudentGeneratedInvalidException.EXCEPTION;
+        }
+    }
+
     @Builder
     public Student(String name, int generation, String description, User user) {
 
@@ -43,14 +52,5 @@ public class Student {
         this.generation = generation;
         this.description = description;
         this.user = user;
-    }
-
-    private void checkValidGeneration(int generation) {
-
-        int year = Year.now().getValue();
-
-        if(2015 + generation > year) {
-            throw StudentGeneratedInvalidException.EXCEPTION;
-        }
     }
 }

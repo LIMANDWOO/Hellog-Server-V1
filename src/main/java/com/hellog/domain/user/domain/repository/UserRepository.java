@@ -1,6 +1,6 @@
-package com.hellog.domain.user.repository;
+package com.hellog.domain.user.domain.repository;
 
-import com.hellog.domain.user.entity.User;
+import com.hellog.domain.user.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

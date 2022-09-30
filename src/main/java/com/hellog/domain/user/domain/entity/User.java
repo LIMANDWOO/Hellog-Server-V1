@@ -1,13 +1,14 @@
-package com.hellog.domain.user.entity;
+package com.hellog.domain.user.domain.entity;
 
-import com.hellog.domain.user.type.UserRole;
-import com.hellog.domain.user.type.UserStatus;
+import com.hellog.domain.user.domain.type.UserRole;
+import com.hellog.domain.user.domain.type.UserStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +40,11 @@ public class User {
     @Column(nullable = false)
     private UserStatus status;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedDate;
 

@@ -1,8 +1,8 @@
-package com.hellog.domain.posting.entity;
+package com.hellog.domain.posting.domain.entity;
 
 import com.hellog.domain.posting.exception.PostingForbiddenException;
-import com.hellog.domain.posting.type.PostingStatus;
-import com.hellog.domain.user.entity.Student;
+import com.hellog.domain.posting.domain.type.PostingStatus;
+import com.hellog.domain.user.domain.entity.Student;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,11 +41,11 @@ public class Posting {
 
     @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime regDt;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updDt;
+    private LocalDateTime updatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_student_id")

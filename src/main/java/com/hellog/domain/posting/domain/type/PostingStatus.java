@@ -1,4 +1,4 @@
-package com.hellog.domain.posting.type;
+package com.hellog.domain.posting.domain.type;
 
 public enum PostingStatus {
 
