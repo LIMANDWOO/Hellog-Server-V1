@@ -3,24 +3,20 @@ package com.hellog.domain.posting.domain.entity;
 import com.hellog.domain.posting.exception.PostingForbiddenException;
 import com.hellog.domain.posting.domain.type.PostingStatus;
 import com.hellog.domain.user.domain.entity.Student;
+import com.hellog.global.jpa.BaseTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posting")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
-public class Posting {
+public class Posting extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -38,14 +34,6 @@ public class Posting {
 
     @Column(nullable = false)
     private long likeCount;
-
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime updatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_student_id")
