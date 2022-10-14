@@ -1,0 +1,90 @@
+package com.hellog.global.security.jwt;
+
+import com.hellog.global.exception.global.InvalidTokenException;
+import com.hellog.global.exception.global.ExpiredTokenException;
+import com.hellog.global.security.auth.AuthDetailsService;
+import com.hellog.global.security.dto.TokenResponse;
+import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
+@RequiredArgsConstructor
+@Component
+public class JwtTokenProvider {
+
+    private final JwtProperties jwtProperties;
+    private final AuthDetailsService authDetailsService;
+
+    private static final String ACCESS_KEY = "access_token";
+    private static final String REFRESH_KEY = "refresh_token";
+    private static final String USER_ROLE = "USER";
+
+    public TokenResponse generateToken(String id, String role) {
+
+        String accessToken = generateToken(id, role, ACCESS_KEY, jwtProperties.getAccessExp());
+        String refreshToken = generateToken(id, role, REFRESH_KEY, jwtProperties.getRefreshExp());
+
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    private String generateToken(String id, String role, String type, Long exp) {
+        return Jwts.builder()
+                .setSubject(id)
+                .setHeaderParam("typ", type)
+                .claim("role", role)
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey())
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + exp * 1000)
+                )
+                .setIssuedAt(new Date())
+                .compact();
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearer = request.getHeader(jwtProperties.getHeader());
+        if (bearer != null && bearer.startsWith(jwtProperties.getPrefix())
+                && bearer.length() > jwtProperties.getPrefix().length() + 1)
+            return bearer.substring(jwtProperties.getPrefix().length() + 1);
+        return null;
+    }
+
+    public Authentication authentication(String token) {
+        Claims body = getJws(token).getBody();
+        if (!isNotRefreshToken(token))
+            throw InvalidTokenException.EXCEPTION;
+
+        UserDetails userDetails = getDetails(body);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public boolean isNotRefreshToken(String token) {
+        return !REFRESH_KEY.equals(getJws(token).getHeader().get("typ").toString());
+    }
+
+    public String getRole(String token) {
+        return getJws(token).getBody().get("role").toString();
+    }
+
+    private Jws<Claims> getJws(String token) {
+        try {
+            return Jwts.parser().setSigningKey(jwtProperties.getSecretKey())
+                    .parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            throw ExpiredTokenException.EXCEPTION;
+        } catch (Exception e) {
+            throw InvalidTokenException.EXCEPTION;
+        }
+    }
+
+    private UserDetails getDetails(Claims body) {
+        return authDetailsService
+                .loadUserByUsername(body.getSubject());
+    }
+
+}

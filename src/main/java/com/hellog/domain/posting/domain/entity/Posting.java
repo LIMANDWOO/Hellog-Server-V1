@@ -13,7 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "posting")
+@Table(name = "tbl_posting")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Posting extends BaseTime {

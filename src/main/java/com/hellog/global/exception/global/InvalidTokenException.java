@@ -1,5 +1,6 @@
-package com.hellog.global.exception;
+package com.hellog.global.exception.global;
 
+import com.hellog.global.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
 public class InvalidTokenException extends CustomException {

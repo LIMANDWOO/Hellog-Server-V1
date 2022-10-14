@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.time.Year;
 
 @Entity
-@Table(name = "student")
+@Table(name = "tbl_student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {

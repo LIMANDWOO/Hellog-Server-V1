@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "like")
+@Table(name = "tbl_like")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like extends BaseTime {
