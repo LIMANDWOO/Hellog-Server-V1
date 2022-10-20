@@ -1,14 +1,14 @@
 package com.hellog.global.security.jwt;
 
 import lombok.Getter;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 import java.util.Base64;
 
 @Getter
+@ConfigurationProperties("jwt")
 @ConstructorBinding
-@ConfigurationPropertiesScan("jwt")
 public class JwtProperties {
 
     private final String secretKey;
