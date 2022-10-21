@@ -1,6 +1,6 @@
 package com.hellog.domain.user.domain.entity;
 
-import com.hellog.domain.user.exception.StudentGeneratedInvalidException;
+import com.hellog.domain.user.exception.StudentGenerationInvalidException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class Student {
         int year = Year.now().getValue();
 
         if(2015 + generation > year) {
-            throw StudentGeneratedInvalidException.EXCEPTION;
+            throw StudentGenerationInvalidException.EXCEPTION;
         }
     }
 

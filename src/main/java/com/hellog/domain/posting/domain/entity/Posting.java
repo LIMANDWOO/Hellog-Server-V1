@@ -1,6 +1,6 @@
 package com.hellog.domain.posting.domain.entity;
 
-import com.hellog.domain.posting.exception.PostingForbiddenException;
+import com.hellog.domain.posting.exception.PostingNotOwnerException;
 import com.hellog.domain.posting.domain.type.PostingStatus;
 import com.hellog.domain.user.domain.entity.Student;
 import com.hellog.global.jpa.BaseTime;
@@ -51,10 +51,14 @@ public class Posting extends BaseTime {
         this.likeCount--;
     }
 
-    public void updatePosting(String title, String content, String summary, Student student) {
-        if (!this.student.equals(student)) {
-            throw PostingForbiddenException.EXCEPTION;
+    public void checkCanManage(Student student) {
+        if (this.student.getId() != student.getId()) {
+            throw PostingNotOwnerException.EXCEPTION;
         }
+    }
+
+    public void updatePosting(String title, String content, String summary, Student student) {
+        checkCanManage(student);
         this.title = title;
         this.content = content;
         this.summary = summary;
