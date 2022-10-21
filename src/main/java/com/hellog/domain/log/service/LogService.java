@@ -12,10 +12,11 @@ public class LogService {
 
     private final LogRepository logRepository;
 
-    public void writeLog(HttpStatus status, String errorName) {
+    public void writeLog(HttpStatus status, String errorName, String message) {
         Log log = Log.builder()
                 .status(status)
                 .errorName(errorName)
+                .message(message)
                 .build();
         logRepository.save(log);
     }

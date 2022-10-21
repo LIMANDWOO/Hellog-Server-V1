@@ -24,9 +24,13 @@ public class Log extends BaseTime {
     @Column(nullable = false)
     private int statusCode;
 
+    @Column(nullable = false)
+    private String message;
+
     @Builder
-    public Log(String errorName, HttpStatus status) {
+    public Log(String errorName, HttpStatus status, String message) {
         this.errorName = errorName;
         this.statusCode = status.value();
+        this.message = message;
     }
 }
