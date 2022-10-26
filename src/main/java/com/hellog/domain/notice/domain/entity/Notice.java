@@ -32,17 +32,22 @@ public class Notice extends BaseTime {
     @JoinColumn(name = "fk_user_id")
     private User user;
 
-    private void checkAdmin(User user) {
+    public void checkAdmin(User user) {
         if (!user.getRole().equals(UserRole.ADMIN)) {
             throw NoticeForbiddenException.EXCEPTION;
         }
     }
 
+    public void updateNotice(String title, String content, User user) {
+        checkAdmin(user);
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
     @Builder
     public Notice(String title, String content, User user) {
-
         checkAdmin(user);
-
         this.title = title;
         this.content = content;
         this.user = user;
