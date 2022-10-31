@@ -17,7 +17,6 @@ public class LikeId implements Serializable {
 
     private long posting;
 
-    @Builder
     public LikeId(long user, long posting) {
         this.user = user;
         this.posting = posting;
