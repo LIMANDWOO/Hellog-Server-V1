@@ -17,8 +17,8 @@ public class LikeId implements Serializable {
 
     private long posting;
 
-    public LikeId(long user, long posting) {
-        this.user = user;
-        this.posting = posting;
+    public LikeId(long postingId, long userId) {
+        posting = postingId;
+        user = userId;
     }
 }

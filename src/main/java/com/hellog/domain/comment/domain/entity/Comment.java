@@ -16,23 +16,24 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTime {
 
-    @EmbeddedId
-    private CommentId id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @MapsId("user")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
-    @MapsId("posting")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_posting_id", nullable = false)
     private Posting posting;
 
+    @Column(nullable = false)
+    private String content;
+
     @Builder
-    public Comment(CommentId id, User user, Posting posting) {
-        this.id = id;
+    public Comment(User user, Posting posting, String content) {
         this.user = user;
         this.posting = posting;
+        this.content = content;
     }
 }

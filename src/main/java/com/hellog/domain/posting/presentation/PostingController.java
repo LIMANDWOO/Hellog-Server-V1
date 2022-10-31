@@ -1,5 +1,9 @@
 package com.hellog.domain.posting.presentation;
 
+import com.hellog.domain.comment.domain.entity.Comment;
+import com.hellog.domain.comment.presentation.dto.request.CreateCommentRequest;
+import com.hellog.domain.comment.service.CommentService;
+import com.hellog.domain.like.service.LikeService;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.posting.presentation.dto.request.CreatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
@@ -18,6 +22,8 @@ import java.util.List;
 public class PostingController {
 
     private final PostingService postingService;
+    private final LikeService likeService;
+    private final CommentService commentService;
 
     @GetMapping("/trending")
     @ResponseStatus(HttpStatus.OK)
@@ -64,7 +70,7 @@ public class PostingController {
             @PathVariable("id") long postingId,
             @RequestAttribute User user
     ) {
-        // TODO : service
+        likeService.createLike(postingId, user);
     }
 
     @DeleteMapping("/like/{id}")
@@ -73,6 +79,17 @@ public class PostingController {
             @PathVariable("id") long postingId,
             @RequestAttribute User user
     ) {
-        // TODO : service
+        likeService.deleteLike(postingId, user);
     }
+
+    @PostMapping("/comment")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Comment createPostingComment(
+            @RequestBody @Valid CreateCommentRequest request,
+            @RequestAttribute User user
+    ) {
+        return commentService.createComment(request, user);
+    }
+
+    @DeleteMapping("/")
 }
