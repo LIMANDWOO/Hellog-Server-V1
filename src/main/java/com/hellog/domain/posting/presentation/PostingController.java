@@ -57,4 +57,22 @@ public class PostingController {
     ) {
         postingService.deletePosting(postingId, user);
     }
+
+    @PostMapping("/like/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createPostingLike(
+            @PathVariable("id") long postingId,
+            @RequestAttribute User user
+    ) {
+        // TODO : service
+    }
+
+    @DeleteMapping("/like/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePostingLike(
+            @PathVariable("id") long postingId,
+            @RequestAttribute User user
+    ) {
+        // TODO : service
+    }
 }
