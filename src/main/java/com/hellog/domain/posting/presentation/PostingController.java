@@ -91,5 +91,12 @@ public class PostingController {
         return commentService.createComment(request, user);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/comment/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePostingComment(
+            @PathVariable("id") long commentId,
+            @RequestAttribute User user
+    ) {
+        commentService.deleteComment(commentId, user);
+    }
 }
