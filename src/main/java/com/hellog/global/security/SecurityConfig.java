@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,7 +26,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ADMIN_CONFIRM_APPLICATION = "CONFIRM_APPLICATION";
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/swagger-ui/**")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/v2/api-docs/**");
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .cors().and()
@@ -40,23 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/schedule").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/**").permitAll()
-                .antMatchers("/user/auth", "/admin/auth").permitAll()
-                .antMatchers("/**/email/verify").permitAll()
-
-                //user
-                .antMatchers("/pdf/**").hasRole(USER)
-                .antMatchers("/score/**").hasRole(USER)
-                .antMatchers("/application/**").hasRole(USER)
-                .antMatchers(HttpMethod.GET, "/user/status").hasRole(USER)
-
-                //admin
-                .antMatchers(HttpMethod.DELETE, "/admin/data").hasRole(ADMIN_ROOT)
-                .antMatchers(HttpMethod.GET, "/admin/excel/**").hasRole(ADMIN_ROOT)
-                .antMatchers(HttpMethod.PATCH, "/schedule", "/admin/application/**").hasAnyRole(ADMIN_ROOT)
-                .antMatchers("/admin/application-count").hasAnyRole(ADMIN_ROOT, ADMIN_CONFIRM_APPLICATION)
-                .antMatchers(HttpMethod.POST, "/admin/auth/check").hasAnyRole(ADMIN_ROOT, ADMIN_CONFIRM_APPLICATION)
-                .antMatchers(HttpMethod.GET, "/admin/applicants", "/admin/applicant/**", "/admin/statics/**").hasAnyRole(ADMIN_ROOT, ADMIN_CONFIRM_APPLICATION)
-
                 .anyRequest().authenticated()
                 .and().apply(new FilterConfig(jwtTokenProvider));
     }
