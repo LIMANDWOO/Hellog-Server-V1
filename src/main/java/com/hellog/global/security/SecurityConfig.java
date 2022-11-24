@@ -41,14 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         http
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/schedule").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/user/**").permitAll()
+                .antMatchers( "/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/posting/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/notice/**").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new FilterConfig(jwtTokenProvider));
     }
