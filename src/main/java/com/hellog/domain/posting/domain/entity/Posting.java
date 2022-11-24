@@ -28,6 +28,9 @@ public class Posting extends BaseTime {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(nullable = false)
+    private String thumbnailUrl;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private PostingStatus status;
@@ -57,19 +60,21 @@ public class Posting extends BaseTime {
         }
     }
 
-    public void updatePosting(String title, String content, String summary, Student student) {
+    public void updatePosting(String title, String content, String summary, String thumbnailUrl, Student student) {
         checkCanManage(student);
         this.title = title;
         this.content = content;
         this.summary = summary;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     @Builder
-    public Posting(String title, String content, String summary, Student student) {
+    public Posting(String title, String content, String summary, Student student, String thumbnailUrl) {
         this.title = title;
         this.content = content;
         this.summary = summary;
         this.student = student;
+        this.thumbnailUrl = thumbnailUrl;
         this.status = PostingStatus.ACTIVE;
         this.likeCount = 0;
     }

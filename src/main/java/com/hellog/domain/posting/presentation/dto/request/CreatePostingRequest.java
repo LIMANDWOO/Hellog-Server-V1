@@ -21,4 +21,7 @@ public class CreatePostingRequest {
 
     @NotEmpty
     private String summary;
+
+    @NotEmpty
+    private String thumbnailUrl;
 }

@@ -1,5 +1,6 @@
 package com.hellog.domain.comment.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.global.jpa.BaseTime;
@@ -25,6 +26,7 @@ public class Comment extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_posting_id", nullable = false)
+    @JsonIgnore
     private Posting posting;
 
     @Column(nullable = false)

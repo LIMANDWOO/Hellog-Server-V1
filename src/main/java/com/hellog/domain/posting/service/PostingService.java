@@ -1,10 +1,13 @@
 package com.hellog.domain.posting.service;
 
+import com.hellog.domain.comment.domain.entity.Comment;
+import com.hellog.domain.comment.domain.repository.CommentRepository;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.posting.domain.repository.PostingRepository;
 import com.hellog.domain.posting.exception.PostingNotFoundException;
 import com.hellog.domain.posting.presentation.dto.request.CreatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
+import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.user.domain.entity.Student;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.domain.user.service.UserService;
@@ -20,6 +23,7 @@ public class PostingService {
 
     private final PostingRepository postingRepository;
     private final UserService userService;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
     public List<Posting> getTrendingPosting() {
@@ -27,9 +31,21 @@ public class PostingService {
     }
 
     @Transactional(readOnly = true)
-    public Posting getPostingById(long id) {
-        return postingRepository.findById(id)
+    public PostingResponse getPostingById(long id) {
+        Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
+        List<Comment> comments = commentRepository.findAllByPosting(posting);
+        return PostingResponse.builder()
+                .id(posting.getId())
+                .title(posting.getTitle())
+                .content(posting.getContent())
+                .thumbnailUrl(posting.getThumbnailUrl())
+                .status(posting.getStatus())
+                .likeCount(posting.getLikeCount())
+                .student(posting.getStudent())
+                .summary(posting.getSummary())
+                .comments(comments)
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -62,6 +78,7 @@ public class PostingService {
                 request.getTitle(),
                 request.getContent(),
                 request.getSummary(),
+                request.getThumbnailUrl(),
                 student);
         return postingRepository.save(posting);
     }

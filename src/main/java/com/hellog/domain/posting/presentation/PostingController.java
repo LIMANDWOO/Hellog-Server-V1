@@ -7,6 +7,7 @@ import com.hellog.domain.like.service.LikeService;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.posting.presentation.dto.request.CreatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
+import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.posting.service.PostingService;
 import com.hellog.domain.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class PostingController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Posting getPostingById(@PathVariable("id") long postingId) {
+    public PostingResponse getPostingById(@PathVariable("id") long postingId) {
         return postingService.getPostingById(postingId);
     }
 

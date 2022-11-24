@@ -25,4 +25,7 @@ public class UpdatePostingRequest {
 
     @NotEmpty
     private String summary;
+
+    @NotEmpty
+    private String thumbnailUrl;
 }
