@@ -10,6 +10,7 @@ import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.posting.service.PostingService;
 import com.hellog.domain.user.domain.entity.User;
+import com.hellog.global.annotation.AuthenticationCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class PostingController {
         return postingService.getPostingById(postingId);
     }
 
+    @AuthenticationCheck
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Posting createPosting(
@@ -47,6 +49,7 @@ public class PostingController {
         return postingService.createPosting(request, user);
     }
 
+    @AuthenticationCheck
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public Posting updatePosting(
@@ -56,6 +59,7 @@ public class PostingController {
         return postingService.updatePosting(request, user);
     }
 
+    @AuthenticationCheck
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePosting(
@@ -65,6 +69,7 @@ public class PostingController {
         postingService.deletePosting(postingId, user);
     }
 
+    @AuthenticationCheck
     @PostMapping("/like/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void createPostingLike(
@@ -74,6 +79,7 @@ public class PostingController {
         likeService.createLike(postingId, user);
     }
 
+    @AuthenticationCheck
     @DeleteMapping("/like/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePostingLike(
@@ -83,6 +89,7 @@ public class PostingController {
         likeService.deleteLike(postingId, user);
     }
 
+    @AuthenticationCheck
     @PostMapping("/comment")
     @ResponseStatus(HttpStatus.CREATED)
     public Comment createPostingComment(
@@ -92,6 +99,7 @@ public class PostingController {
         return commentService.createComment(request, user);
     }
 
+    @AuthenticationCheck
     @DeleteMapping("/comment/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePostingComment(

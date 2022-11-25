@@ -5,6 +5,7 @@ import com.hellog.domain.notice.presentation.dto.request.CreateNoticeRequest;
 import com.hellog.domain.notice.presentation.dto.request.UpdateNoticeRequest;
 import com.hellog.domain.notice.service.NoticeService;
 import com.hellog.domain.user.domain.entity.User;
+import com.hellog.global.annotation.AuthenticationCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class NoticeController {
         return noticeService.getNoticeById(noticeId);
     }
 
+    @AuthenticationCheck
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Notice createNotice(
@@ -40,6 +42,7 @@ public class NoticeController {
         return noticeService.createNotice(request, user);
     }
 
+    @AuthenticationCheck
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public Notice updateNotice(
@@ -49,6 +52,7 @@ public class NoticeController {
         return noticeService.updateNotice(request, user);
     }
 
+    @AuthenticationCheck
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteNotice(
