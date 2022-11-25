@@ -11,6 +11,7 @@ import com.hellog.domain.posting.exception.PostingNotFoundException;
 import com.hellog.domain.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostingRepository postingRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     public Comment createComment(CreateCommentRequest request, User user) {
         Posting posting = postingRepository.findById(request.getPostingId())
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
@@ -30,6 +32,7 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteComment(long commentId, User user) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);

@@ -23,14 +23,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserByEmail(String email) {
-
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     @Transactional(readOnly = true)
     public Student getStudentByUser(User user) {
-
         return studentRepository.findByUser(user)
                 .orElseThrow(() -> StudentNotFoundException.EXCEPTION);
     }

@@ -1,4 +1,4 @@
-package com.hellog.global.security;
+package com.hellog.global.config.webmvc;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -13,5 +13,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowedOrigins("http://localhost:3000");
     }
-
 }

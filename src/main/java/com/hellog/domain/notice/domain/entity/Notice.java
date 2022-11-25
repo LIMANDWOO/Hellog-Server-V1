@@ -29,7 +29,7 @@ public class Notice extends BaseTime {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_user_id")
+    @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
     public void checkAdmin(User user) {

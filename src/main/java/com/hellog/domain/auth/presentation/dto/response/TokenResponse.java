@@ -1,4 +1,4 @@
-package com.hellog.global.security.dto;
+package com.hellog.domain.auth.presentation.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

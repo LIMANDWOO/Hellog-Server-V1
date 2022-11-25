@@ -39,7 +39,7 @@ public class Posting extends BaseTime {
     private long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_student_id")
+    @JoinColumn(name = "fk_student_id", nullable = false)
     private Student student;
 
     @Column(nullable = false)

@@ -20,17 +20,13 @@ public class User extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    @Size(max = 255)
-    private String profileImage;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Size(max = 75)
     private String email;
 
     @Column(nullable = false)
-    @Size()
-    private String password;
+    @Size(max = 255)
+    private String profileImage;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -41,9 +37,8 @@ public class User extends BaseTime {
     private UserStatus status;
 
     @Builder
-    public User(String email, String password, String profileImage, UserRole role) {
+    public User(String email, String profileImage, UserRole role) {
         this.email = email;
-        this.password = password;
         this.profileImage = profileImage;
         this.role = role;
         this.status = UserStatus.ACTIVE;

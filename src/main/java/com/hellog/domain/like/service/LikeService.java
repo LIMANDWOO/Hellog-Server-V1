@@ -37,6 +37,7 @@ public class LikeService {
         postingRepository.save(posting);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteLike(long postingId, User user) {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
