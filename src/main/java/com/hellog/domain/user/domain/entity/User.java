@@ -28,6 +28,10 @@ public class User extends BaseTime {
     @Size(max = 75)
     private String email;
 
+    @Column(nullable = false)
+    @Size()
+    private String password;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
@@ -37,8 +41,9 @@ public class User extends BaseTime {
     private UserStatus status;
 
     @Builder
-    public User(String email, String profileImage, UserRole role) {
+    public User(String email, String password, String profileImage, UserRole role) {
         this.email = email;
+        this.password = password;
         this.profileImage = profileImage;
         this.role = role;
         this.status = UserStatus.ACTIVE;
