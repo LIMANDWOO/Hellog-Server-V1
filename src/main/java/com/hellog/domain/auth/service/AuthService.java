@@ -43,6 +43,8 @@ public class AuthService {
 //                headers);
 
         Optional<User> user = userRepository.findByEmail(request.getEmail());
+        String accessToken;
+        String refreshToken;
 
         if (user.isEmpty()) {
             User newUser = User.builder()
@@ -60,10 +62,13 @@ public class AuthService {
                     .user(newUser)
                     .build();
             studentRepository.save(newStudent);
-        }
 
-        String accessToken = jwtUtil.createToken(user.get(), JwtType.ACCESS);
-        String refreshToken = jwtUtil.createToken(user.get(), JwtType.REFRESH);
+            accessToken = jwtUtil.createToken(newUser, JwtType.ACCESS);
+            refreshToken = jwtUtil.createToken(newUser, JwtType.REFRESH);
+        } else {
+            accessToken = jwtUtil.createToken(user.get(), JwtType.ACCESS);
+            refreshToken = jwtUtil.createToken(user.get(), JwtType.REFRESH);
+        }
 
         return new TokenResponse(accessToken, refreshToken);
     }
