@@ -33,28 +33,28 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public TokenResponse loginWithGoogleOAuth(GoogleOAuthLoginRequest request) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("access_token", request.getAccessToken());
-        headers.add("alt", "json");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("access_token", request.getAccessToken());
+//        headers.add("alt", "json");
 
-        GoogleUserInformationResponse response = restTemplate.getForObject(
-                GOOGLE_INFO_URL,
-                GoogleUserInformationResponse.class,
-                headers);
+//        GoogleUserInformationResponse response = restTemplate.getForObject(
+//                GOOGLE_INFO_URL,
+//                GoogleUserInformationResponse.class,
+//                headers);
 
-        Optional<User> user = userRepository.findByEmail(response.getEmail());
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
 
         if (user.isEmpty()) {
             User newUser = User.builder()
-                    .email(response.getEmail())
-                    .profileImage(response.getPicture())
+                    .email(request.getEmail())
+                    .profileImage(request.getPicture())
                     .role(UserRole.GUEST)
                     .build();
             userRepository.save(newUser);
 
             // TODO : 테스트 끝나면 고치기
             Student newStudent = Student.builder()
-                    .name("임동현")
+                    .name(request.getName())
                     .generation(6)
                     .description("혁신적인 FE를 선호합니다.")
                     .user(newUser)

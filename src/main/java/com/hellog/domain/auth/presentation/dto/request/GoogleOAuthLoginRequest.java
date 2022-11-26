@@ -14,5 +14,11 @@ import javax.validation.constraints.NotEmpty;
 public class GoogleOAuthLoginRequest {
 
     @NotEmpty
-    private String accessToken;
+    private String name;
+
+    @NotEmpty
+    private String email;
+
+    @NotEmpty
+    private String picture;
 }
