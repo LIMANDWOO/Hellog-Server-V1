@@ -2,6 +2,7 @@ package com.hellog.domain.posting.service;
 
 import com.hellog.domain.comment.domain.entity.Comment;
 import com.hellog.domain.comment.domain.repository.CommentRepository;
+import com.hellog.domain.like.domain.repository.LikeRepository;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.posting.domain.repository.PostingRepository;
 import com.hellog.domain.posting.exception.PostingNotFoundException;
@@ -24,6 +25,7 @@ public class PostingService {
     private final PostingRepository postingRepository;
     private final UserService userService;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     @Transactional(readOnly = true)
     public List<Posting> getTrendingPosting() {
@@ -31,10 +33,11 @@ public class PostingService {
     }
 
     @Transactional(readOnly = true)
-    public PostingResponse getPostingById(long id) {
+    public PostingResponse getPostingById(long id, User user) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
         List<Comment> comments = commentRepository.findAllByPosting(posting);
+        boolean liked = likeRepository.existsByPostingAndUser(posting, user);
         return PostingResponse.builder()
                 .id(posting.getId())
                 .title(posting.getTitle())
@@ -45,6 +48,7 @@ public class PostingService {
                 .student(posting.getStudent())
                 .summary(posting.getSummary())
                 .comments(comments)
+                .liked(liked)
                 .build();
     }
 

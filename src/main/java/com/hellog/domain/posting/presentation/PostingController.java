@@ -33,10 +33,14 @@ public class PostingController {
         return postingService.getTrendingPosting();
     }
 
+    @AuthenticationCheck
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PostingResponse getPostingById(@PathVariable("id") long postingId) {
-        return postingService.getPostingById(postingId);
+    public PostingResponse getPostingById(
+            @PathVariable("id") long postingId,
+            @RequestAttribute User user
+    ) {
+        return postingService.getPostingById(postingId, user);
     }
 
     @AuthenticationCheck

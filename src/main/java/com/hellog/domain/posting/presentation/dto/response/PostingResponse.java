@@ -26,4 +26,5 @@ public class PostingResponse {
     private Student student;
     private String summary;
     private List<Comment> comments;
+    private boolean liked;
 }

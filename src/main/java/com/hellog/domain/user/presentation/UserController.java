@@ -2,6 +2,7 @@ package com.hellog.domain.user.presentation;
 
 import com.hellog.domain.user.domain.entity.Student;
 import com.hellog.domain.user.domain.entity.User;
+import com.hellog.domain.user.presentation.dto.response.StudentResponse;
 import com.hellog.domain.user.service.UserService;
 import com.hellog.global.annotation.AuthenticationCheck;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class UserController {
     @AuthenticationCheck
     @GetMapping("/myinfo")
     @ResponseStatus(HttpStatus.OK)
-    public Student getMyInfo(@RequestAttribute User user) {
-        return userService.getStudentByUser(user);
+    public StudentResponse getMyInfo(@RequestAttribute User user) {
+        return userService.getStudentByUserWithPostings(user);
     }
 }
