@@ -62,6 +62,7 @@ public class PostingService {
                 .content(request.getContent())
                 .summary(request.getSummary())
                 .student(student)
+                .thumbnailUrl(request.getThumbnailUrl())
                 .build();
 
         return postingRepository.save(posting);
