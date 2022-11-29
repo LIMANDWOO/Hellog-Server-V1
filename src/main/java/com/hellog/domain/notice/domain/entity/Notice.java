@@ -1,5 +1,7 @@
 package com.hellog.domain.notice.domain.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.notice.exception.NoticeForbiddenException;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.domain.user.domain.type.UserRole;
@@ -16,16 +18,17 @@ import javax.validation.constraints.Size;
 @Table(name = "tbl_notice")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Notice extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     @Size(max = 255)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)

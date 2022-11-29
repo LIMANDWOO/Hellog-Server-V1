@@ -1,5 +1,7 @@
 package com.hellog.domain.like.domain.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.global.jpa.BaseTime;
@@ -14,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "tbl_like")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Like extends BaseTime {
 
     @EmbeddedId

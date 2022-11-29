@@ -1,5 +1,7 @@
 package com.hellog.domain.user.domain.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.user.exception.StudentGenerationInvalidException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,14 +16,11 @@ import java.time.Year;
 @Table(name = "tbl_student")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Student {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private long id;
-
-    @Column(nullable = false)
-    @Size(max = 45)
-    private String name;
 
     @Column(nullable = false)
     private int generation;
@@ -44,11 +43,11 @@ public class Student {
     }
 
     @Builder
-    public Student(String name, int generation, String description, User user) {
+    public Student(long userId, int generation, String description, User user) {
 
         checkValidGeneration(generation);
 
-        this.name = name;
+        this.id = userId;
         this.generation = generation;
         this.description = description;
         this.user = user;

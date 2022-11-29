@@ -1,7 +1,6 @@
 package com.hellog.domain.like.domain.entity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

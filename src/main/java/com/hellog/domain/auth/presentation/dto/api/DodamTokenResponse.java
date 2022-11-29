@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class GoogleUserInformationResponse {
-    private String name;
-    private String email;
-    private String picture;
+public class DodamTokenResponse {
+    private String accessToken;
+    private String refreshToken;
+    private String tokenType;
+    private String expiresIn;
 }

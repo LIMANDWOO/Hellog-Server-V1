@@ -1,6 +1,7 @@
 package com.hellog.domain.posting.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.posting.exception.PostingNotOwnerException;
 import com.hellog.domain.posting.domain.type.PostingStatus;
 import com.hellog.domain.user.domain.entity.Student;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
 @Table(name = "tbl_posting")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Posting extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +32,6 @@ public class Posting extends BaseTime {
     private String content;
 
     @Column(nullable = false, length = 500)
-    @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
 
     @Enumerated(value = EnumType.STRING)
@@ -40,7 +41,7 @@ public class Posting extends BaseTime {
     @Column(nullable = false)
     private long likeCount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_student_id", nullable = false)
     private Student student;
 

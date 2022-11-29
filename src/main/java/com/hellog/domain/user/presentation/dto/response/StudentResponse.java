@@ -17,7 +17,6 @@ import java.util.List;
 public class StudentResponse {
 
     private long id;
-    private String name;
     private int generation;
     private String description;
     private User user;

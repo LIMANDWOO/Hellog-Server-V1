@@ -15,4 +15,13 @@ public class DodamOAuthLoginRequest {
 
     @NotEmpty
     private String code;
+
+    @NotEmpty
+    private String clientId;
+
+    @NotEmpty
+    private String clientSecret;
+
+    @NotEmpty
+    private int generation;
 }

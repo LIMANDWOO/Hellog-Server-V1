@@ -53,6 +53,11 @@ public class PostingService {
     }
 
     @Transactional(readOnly = true)
+    public List<Posting> getPostingByStudent(Student student) {
+        return postingRepository.findAllByStudent(student);
+    }
+
+    @Transactional(readOnly = true)
     public List<Posting> searchPostingByTitleContaining(String title) {
         return postingRepository.findAllByTitleContains(title);
     }

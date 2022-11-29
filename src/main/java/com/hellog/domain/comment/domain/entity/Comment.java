@@ -1,6 +1,8 @@
 package com.hellog.domain.comment.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.posting.domain.entity.Posting;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.global.jpa.BaseTime;
@@ -15,16 +17,17 @@ import javax.persistence.*;
 @Table(name = "tbl_comment")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Comment extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_posting_id", nullable = false)
     @JsonIgnore
     private Posting posting;
