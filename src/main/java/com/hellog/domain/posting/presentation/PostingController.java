@@ -11,6 +11,7 @@ import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.posting.service.PostingService;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.global.annotation.AuthenticationCheck;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,14 @@ public class PostingController {
     private final LikeService likeService;
     private final CommentService commentService;
 
+    @ApiOperation("트렌딩 알고리즘에 맞는 게시물 리스트를 조회합니다")
     @GetMapping("/trending")
     @ResponseStatus(HttpStatus.OK)
     public List<Posting> getTrendingPostings() {
         return postingService.getTrendingPosting();
     }
 
+    @ApiOperation("포스팅 id로 포스팅을 조회합니다")
     @AuthenticationCheck
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -43,6 +46,7 @@ public class PostingController {
         return postingService.getPostingById(postingId, user);
     }
 
+    @ApiOperation("포스팅을 생성합니다")
     @AuthenticationCheck
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,6 +57,7 @@ public class PostingController {
         return postingService.createPosting(request, user);
     }
 
+    @ApiOperation("포스팅을 수정합니다")
     @AuthenticationCheck
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -63,6 +68,7 @@ public class PostingController {
         return postingService.updatePosting(request, user);
     }
 
+    @ApiOperation("포스팅 id 값으로 포스팅을 삭제합니다")
     @AuthenticationCheck
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -73,6 +79,7 @@ public class PostingController {
         postingService.deletePosting(postingId, user);
     }
 
+    @ApiOperation("포스팅에 좋아요를 추가합니다")
     @AuthenticationCheck
     @PostMapping("/like/{id}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -83,6 +90,7 @@ public class PostingController {
         likeService.createLike(postingId, user);
     }
 
+    @ApiOperation("포스팅에 추가된 좋아요를 취소합니다")
     @AuthenticationCheck
     @DeleteMapping("/like/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -93,6 +101,7 @@ public class PostingController {
         likeService.deleteLike(postingId, user);
     }
 
+    @ApiOperation("포스팅에 댓글을 추가합니다")
     @AuthenticationCheck
     @PostMapping("/comment")
     @ResponseStatus(HttpStatus.CREATED)
@@ -103,6 +112,7 @@ public class PostingController {
         return commentService.createComment(request, user);
     }
 
+    @ApiOperation("포스팅에 추가된 댓글을 삭제합니다")
     @AuthenticationCheck
     @DeleteMapping("/comment/{id}")
     @ResponseStatus(HttpStatus.OK)
