@@ -8,11 +8,10 @@ import com.hellog.domain.auth.presentation.dto.request.GoogleOAuthLoginRequest;
 import com.hellog.domain.auth.presentation.dto.response.TokenRefreshResponse;
 import com.hellog.domain.auth.presentation.dto.response.TokenResponse;
 import com.hellog.domain.user.domain.entity.User;
-import com.hellog.domain.user.domain.repository.StudentRepository;
 import com.hellog.domain.user.domain.repository.UserRepository;
+import com.hellog.domain.user.domain.type.AuthType;
 import com.hellog.domain.user.service.UserService;
-import com.hellog.domain.user.service.dto.CreateGuestUserDto;
-import com.hellog.domain.user.service.dto.CreateStudentDto;
+import com.hellog.domain.user.service.dto.CreateUserDto;
 import com.hellog.global.lib.jwt.JwtType;
 import com.hellog.global.lib.jwt.JwtUtil;
 import com.hellog.global.properties.EndPointProperties;
@@ -27,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final StudentRepository studentRepository;
     private final UserService userService;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
@@ -46,14 +44,16 @@ public class AuthService {
                 headers);
 
         User user = userRepository.findByEmail(googleResponse.getEmail())
-                .orElseGet(() -> userService.createGuestUser(
-                        CreateGuestUserDto.builder()
+                .orElseGet(() -> userService.createUser(
+                        CreateUserDto.builder()
                                 .name(googleResponse.getName())
                                 .email(googleResponse.getEmail())
                                 .profileImage(googleResponse.getPicture())
+                                .description("")
+                                .authType(AuthType.GOOGLE)
                                 .build()
                 ));
-        user.updateUserInformation(googleResponse.getPicture());
+        user.updateUserInformation(googleResponse.getName(), user.getDescription(), googleResponse.getPicture());
         userRepository.save(user);
 
         String accessToken = jwtUtil.createToken(user, JwtType.ACCESS);
@@ -85,25 +85,20 @@ public class AuthService {
         );
 
         User user = userRepository.findByEmail(dodamUserInfoRequest.getData().getEmail())
-                .orElseGet(() -> userService.createGuestUser(
-                        CreateGuestUserDto.builder()
+                .orElseGet(() -> userService.createUser(
+                        CreateUserDto.builder()
                                 .name(dodamUserInfoRequest.getData().getName())
                                 .email(dodamUserInfoRequest.getData().getEmail())
+                                .description("")
                                 .profileImage(dodamUserInfoRequest.getData().getProfileImage())
+                                .authType(AuthType.DODAM)
                                 .build()
                 ));
-        user.updateUserInformation(dodamUserInfoRequest.getData().getProfileImage());
+        user.updateUserInformation(
+                dodamUserInfoRequest.getData().getName(),
+                user.getDescription(),
+                dodamUserInfoRequest.getData().getProfileImage());
         userRepository.save(user);
-
-        if (!studentRepository.existsByUser(user)) {
-            userService.createStudent(
-                    CreateStudentDto.builder()
-                            .email(dodamUserInfoRequest.getData().getEmail())
-                            .description(dodamUserInfoRequest.getData().getName() + "의 블로그입니다.")
-                            .generation(request.getGeneration())
-                            .build()
-            );
-        }
 
         String accessToken = jwtUtil.createToken(user, JwtType.ACCESS);
         String refreshToken = jwtUtil.createToken(user, JwtType.REFRESH);

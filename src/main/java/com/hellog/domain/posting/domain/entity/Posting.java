@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.posting.exception.PostingNotOwnerException;
 import com.hellog.domain.posting.domain.type.PostingStatus;
-import com.hellog.domain.user.domain.entity.Student;
+import com.hellog.domain.user.domain.entity.User;
 import com.hellog.global.jpa.BaseTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,8 +42,8 @@ public class Posting extends BaseTime {
     private long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "fk_user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     @Size(max = 255)
@@ -57,14 +57,14 @@ public class Posting extends BaseTime {
         this.likeCount--;
     }
 
-    public void checkCanManage(Student student) {
-        if (this.student.getId() != student.getId()) {
+    public void checkCanManage(User user) {
+        if (this.user.getId() != user.getId()) {
             throw PostingNotOwnerException.EXCEPTION;
         }
     }
 
-    public void updatePosting(String title, String content, String summary, String thumbnailUrl, Student student) {
-        checkCanManage(student);
+    public void updatePosting(String title, String content, String summary, String thumbnailUrl, User user) {
+        checkCanManage(user);
         this.title = title;
         this.content = content;
         this.summary = summary;
@@ -72,11 +72,11 @@ public class Posting extends BaseTime {
     }
 
     @Builder
-    public Posting(String title, String content, String summary, Student student, String thumbnailUrl) {
+    public Posting(String title, String content, String summary, User user, String thumbnailUrl) {
         this.title = title;
         this.content = content;
         this.summary = summary;
-        this.student = student;
+        this.user = user;
         this.thumbnailUrl = thumbnailUrl;
         this.status = PostingStatus.ACTIVE;
         this.likeCount = 0;

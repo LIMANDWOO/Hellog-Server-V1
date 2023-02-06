@@ -9,7 +9,6 @@ import com.hellog.domain.posting.exception.PostingNotFoundException;
 import com.hellog.domain.posting.presentation.dto.request.CreatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
-import com.hellog.domain.user.domain.entity.Student;
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class PostingService {
                 .thumbnailUrl(posting.getThumbnailUrl())
                 .status(posting.getStatus())
                 .likeCount(posting.getLikeCount())
-                .student(posting.getStudent())
+                .user(posting.getUser())
                 .summary(posting.getSummary())
                 .comments(comments)
                 .liked(liked)
@@ -53,8 +52,8 @@ public class PostingService {
     }
 
     @Transactional(readOnly = true)
-    public List<Posting> getPostingByStudent(Student student) {
-        return postingRepository.findAllByStudent(student);
+    public List<Posting> getPostingByUser(User user) {
+        return postingRepository.findAllByUser(user);
     }
 
     @Transactional(readOnly = true)
@@ -65,12 +64,11 @@ public class PostingService {
     @Transactional(rollbackFor = Exception.class)
     public Posting createPosting(CreatePostingRequest request, User user) {
 
-        Student student = userService.getStudentByUser(user);
         Posting posting = Posting.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .summary(request.getSummary())
-                .student(student)
+                .user(user)
                 .thumbnailUrl(request.getThumbnailUrl())
                 .build();
 
@@ -80,7 +78,6 @@ public class PostingService {
     @Transactional(rollbackFor = Exception.class)
     public Posting updatePosting(UpdatePostingRequest request, User user) {
 
-        Student student = userService.getStudentByUser(user);
         Posting posting = postingRepository.findById(request.getId())
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
 
@@ -89,16 +86,15 @@ public class PostingService {
                 request.getContent(),
                 request.getSummary(),
                 request.getThumbnailUrl(),
-                student);
+                user);
         return postingRepository.save(posting);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void deletePosting(long postingId, User user) {
-        Student student = userService.getStudentByUser(user);
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> PostingNotFoundException.EXCEPTION);
-        posting.checkCanManage(student);
+        posting.checkCanManage(user);
         postingRepository.delete(posting);
     }
 }

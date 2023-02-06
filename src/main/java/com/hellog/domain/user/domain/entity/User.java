@@ -2,6 +2,7 @@ package com.hellog.domain.user.domain.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.hellog.domain.user.domain.type.AuthType;
 import com.hellog.domain.user.domain.type.UserRole;
 import com.hellog.domain.user.domain.type.UserStatus;
 import com.hellog.global.jpa.BaseTime;
@@ -31,6 +32,10 @@ public class User extends BaseTime {
     @Size(max = 255)
     private String email;
 
+    @Column(nullable = false)
+    @Size(max = 255)
+    private String description;
+
     @Column(nullable = false, length = 500)
     @Size(max = 500)
     private String profileImage;
@@ -43,17 +48,25 @@ public class User extends BaseTime {
     @Column(nullable = false)
     private UserStatus status;
 
-    public void updateUserInformation(String profileImage) {
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private AuthType authType;
+
+    public void updateUserInformation(String name, String description, String profileImage) {
+        this.name = name;
+        this.description = description;
         this.profileImage = profileImage;
     }
 
     @Builder
-    public User(String name, String email, String profileImage, UserRole role) {
+    public User(String name, String email, String description, String profileImage, UserRole role, AuthType authType) {
         this.name = name;
         this.email = email;
+        this.description = description;
         this.profileImage = profileImage;
         this.role = role;
         this.status = UserStatus.ACTIVE;
+        this.authType = authType;
     }
 
 }

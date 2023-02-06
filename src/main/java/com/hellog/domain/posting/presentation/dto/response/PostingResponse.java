@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hellog.domain.comment.domain.entity.Comment;
 import com.hellog.domain.posting.domain.type.PostingStatus;
-import com.hellog.domain.user.domain.entity.Student;
+import com.hellog.domain.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class PostingResponse {
     private String thumbnailUrl;
     private PostingStatus status;
     private long likeCount;
-    private Student student;
+    private User user;
     private String summary;
     private List<Comment> comments;
     private boolean liked;

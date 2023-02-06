@@ -1,5 +1,6 @@
 package com.hellog.domain.user.service.dto;
 
+import com.hellog.domain.user.domain.type.AuthType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,9 +8,11 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class CreateStudentDto {
+public class CreateUserDto {
 
+    private String name;
     private String email;
-    private int generation;
     private String description;
+    private String profileImage;
+    private AuthType authType;
 }
