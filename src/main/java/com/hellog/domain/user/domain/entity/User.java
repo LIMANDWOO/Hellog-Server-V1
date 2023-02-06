@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -24,32 +25,33 @@ public class User extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull
     @Size(max = 45)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Column(unique = true)
     @Size(max = 255)
     private String email;
 
-    @Column(nullable = false)
+    @NotNull
     @Size(max = 255)
     private String description;
 
-    @Column(nullable = false, length = 500)
+    @NotNull
     @Size(max = 500)
     private String profileImage;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
     private UserRole role;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
     private UserStatus status;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
     private AuthType authType;
 
     public void updateUserInformation(String name, String description, String profileImage) {

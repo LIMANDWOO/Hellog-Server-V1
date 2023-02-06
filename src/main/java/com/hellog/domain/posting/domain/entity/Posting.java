@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -24,28 +25,30 @@ public class Posting extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull
     @Size(max = 255)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false, length = 500)
+    @NotNull
+    @Size(max = 500)
     private String thumbnailUrl;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
     private PostingStatus status;
 
-    @Column(nullable = false)
+    @NotNull
     private long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @NotNull
     @Size(max = 255)
     private String summary;
 

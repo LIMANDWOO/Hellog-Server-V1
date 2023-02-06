@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_log")
@@ -21,13 +22,13 @@ public class Log extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String errorName;
 
-    @Column(nullable = false)
+    @NotNull
     private int statusCode;
 
-    @Column(nullable = false)
+    @NotNull
     private String message;
 
     @Builder
