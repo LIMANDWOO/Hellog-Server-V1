@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,6 +22,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@DynamicInsert
 public class User extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +49,8 @@ public class User extends BaseTime {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
+    @ColumnDefault("'ACTIVE'")
     private UserStatus status;
 
     @NotNull
@@ -67,7 +70,6 @@ public class User extends BaseTime {
         this.description = description;
         this.profileImage = profileImage;
         this.role = role;
-        this.status = UserStatus.ACTIVE;
         this.authType = authType;
     }
 

@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,6 +22,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@DynamicInsert
 public class Posting extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +40,11 @@ public class Posting extends BaseTime {
     @Size(max = 500)
     private String thumbnailUrl;
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
+    @ColumnDefault("'ACTIVE'")
     private PostingStatus status;
 
-    @NotNull
+    @ColumnDefault("0")
     private long likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -81,7 +84,5 @@ public class Posting extends BaseTime {
         this.summary = summary;
         this.user = user;
         this.thumbnailUrl = thumbnailUrl;
-        this.status = PostingStatus.ACTIVE;
-        this.likeCount = 0;
     }
 }
