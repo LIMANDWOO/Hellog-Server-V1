@@ -1,16 +1,15 @@
 package com.hellog.global.lib.jwt;
 
-
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.domain.user.domain.repository.UserRepository;
 import com.hellog.domain.user.exception.UserNotFoundException;
+import com.hellog.global.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -23,14 +22,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    @Value("${jwt.secret.access}")
-    private String secretAccessKey;
-
-    @Value("${jwt.secret.access}")
-    private String secretRefreshKey;
-
-    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
+    private final JwtProperties jwtProperties;
     private final UserRepository userRepository;
+    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
 
     public String createToken(User user, JwtType jwtType) {
 
@@ -43,10 +37,10 @@ public class JwtUtil {
         switch(jwtType) {
             case ACCESS:
                 expiredDate.add(Calendar.DATE, 10);
-                secretKey = secretAccessKey;
+                secretKey = jwtProperties.getSecret().getAccess();
             case REFRESH:
                 expiredDate.add(Calendar.DATE, 20);
-                secretKey = secretRefreshKey;
+                secretKey = jwtProperties.getSecret().getRefresh();
         }
 
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
@@ -69,14 +63,14 @@ public class JwtUtil {
 
     public User validateToken(String token) {
 
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretAccessKey)).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtProperties.getSecret().getAccess())).parseClaimsJws(token).getBody();
         return userRepository.findById(claims.get("id", Long.class))
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     public String refresh(String refreshToken) {
 
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretRefreshKey)).parseClaimsJws(refreshToken).getBody();
+        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtProperties.getSecret().getRefresh())).parseClaimsJws(refreshToken).getBody();
         User user = userRepository.findById(claims.get("id", Long.class))
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 

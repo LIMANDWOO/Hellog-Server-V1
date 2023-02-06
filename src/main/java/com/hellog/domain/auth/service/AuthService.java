@@ -15,6 +15,7 @@ import com.hellog.domain.user.service.dto.CreateGuestUserDto;
 import com.hellog.domain.user.service.dto.CreateStudentDto;
 import com.hellog.global.lib.jwt.JwtType;
 import com.hellog.global.lib.jwt.JwtUtil;
+import com.hellog.global.properties.EndPointProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,7 @@ public class AuthService {
     private final UserService userService;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
-    private static final String GOOGLE_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
-    private static final String DODAM_AUTH_URL = "http://dauth.b1nd.com/api/token";
-    private static final String DODAM_OPEN_URL = "http://open.dodam.b1nd.com/api/user";
+    private final EndPointProperties endPointProperties;
 
     @Transactional(rollbackFor = Exception.class)
     public TokenResponse loginWithGoogleOAuth(GoogleOAuthLoginRequest request) {
@@ -42,7 +41,7 @@ public class AuthService {
         headers.add("alt", "json");
 
         GoogleUserInformationResponse googleResponse = restTemplate.getForObject(
-                GOOGLE_INFO_URL,
+                endPointProperties.getGoogle().getInfo(),
                 GoogleUserInformationResponse.class,
                 headers);
 
@@ -70,9 +69,8 @@ public class AuthService {
         headers.add("client_id", request.getClientId());
         headers.add("client_secret", request.getClientSecret());
 
-        // TODO : DAuth 요청 및 User, Student 생성
         DodamTokenResponse dodamTokenResponse = restTemplate.postForObject(
-                DODAM_AUTH_URL,
+                endPointProperties.getDodam().getAuth(),
                 null,
                 DodamTokenResponse.class,
                 headers
@@ -81,7 +79,7 @@ public class AuthService {
         HttpHeaders headers2 = new HttpHeaders();
         headers2.add("Authorization", "Bearer " + dodamTokenResponse.getAccessToken());
         DodamUserInfoRequest dodamUserInfoRequest = restTemplate.getForObject(
-                DODAM_OPEN_URL,
+                endPointProperties.getDodam().getOpen(),
                 DodamUserInfoRequest.class,
                 headers2
         );

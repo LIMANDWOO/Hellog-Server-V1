@@ -4,8 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.hellog.domain.upload.exception.FileUploadException;
+import com.hellog.global.properties.S3Properties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +21,7 @@ import java.util.UUID;
 public class UploadService {
 
     private final AmazonS3Client amazonS3Client;
-
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private final S3Properties s3Properties;
 
     @Transactional(rollbackFor = Exception.class)
     public String uploadFile(MultipartFile multipartFile) {
@@ -31,11 +29,11 @@ public class UploadService {
             File convertFile = convert(multipartFile)
                     .orElseThrow(() -> new IllegalArgumentException("file convert error"));
 
-            String fileName = bucket + "/" + UUID.randomUUID() + convertFile.getName();
+            String fileName = s3Properties.getBucket() + "/" + UUID.randomUUID() + convertFile.getName();
 
             amazonS3Client.putObject(
-                    new PutObjectRequest(bucket, fileName, convertFile).withCannedAcl(CannedAccessControlList.PublicRead));
-            String uploadImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+                    new PutObjectRequest(s3Properties.getBucket(), fileName, convertFile).withCannedAcl(CannedAccessControlList.PublicRead));
+            String uploadImageUrl = amazonS3Client.getUrl(s3Properties.getBucket(), fileName).toString();
 
             convertFile.delete();
 
@@ -46,7 +44,7 @@ public class UploadService {
     }
 
     public void delete(String path) {
-        amazonS3Client.deleteObject(bucket, path);
+        amazonS3Client.deleteObject(s3Properties.getBucket(), path);
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
