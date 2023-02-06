@@ -34,6 +34,7 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public TokenResponse loginWithGoogleOAuth(GoogleOAuthLoginRequest request) {
 
+        // TODO : 구린 restTemplate 통신 코드 리팩토링
         HttpHeaders headers = new HttpHeaders();
         headers.add("access_token", request.getAccessToken());
         headers.add("alt", "json");
@@ -64,6 +65,7 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public TokenResponse loginWithDodamOAuth(DodamOAuthLoginRequest request) {
 
+        // TODO : 구린 restTemplate 통신 코드 리팩토링
         HttpHeaders headers = new HttpHeaders();
         headers.add("code", request.getCode());
         headers.add("client_id", request.getClientId());

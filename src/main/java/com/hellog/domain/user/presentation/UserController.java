@@ -13,7 +13,7 @@ public class UserController {
 
     private final UserFacade userFacade;
 
-    @GetMapping("/user/info")
+    @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse getStudentInfoById(@RequestParam("id") long id) {
         return userFacade.getUserInfoById(id);
