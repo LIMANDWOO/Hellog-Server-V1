@@ -12,13 +12,11 @@ import java.util.Optional;
 @Repository
 public interface PostingRepository extends JpaRepository<Posting, Long> {
 
-    @Query("select p from Posting p join fetch p.user s")
+    @Query("select p from Posting p join fetch p.user u")
     List<Posting> findAllByUser(User user);
 
-    @Query("select p from Posting p join fetch p.user s where p.id=:id")
+    @Query("select p from Posting p join fetch p.user u where p.id=:id")
     Optional<Posting> findById(long id);
-
-    List<Posting> findAllByOrderByLikeCountDesc();
 
     List<Posting> findAllByTitleContains(String title);
 }

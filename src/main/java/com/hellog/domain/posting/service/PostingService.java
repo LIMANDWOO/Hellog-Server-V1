@@ -10,8 +10,10 @@ import com.hellog.domain.posting.presentation.dto.request.CreatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.user.domain.entity.User;
-import com.hellog.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +24,14 @@ import java.util.List;
 public class PostingService {
 
     private final PostingRepository postingRepository;
-    private final UserService userService;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
 
     @Transactional(readOnly = true)
-    public List<Posting> getTrendingPosting() {
-        return postingRepository.findAllByOrderByLikeCountDesc();
+    public List<Posting> getTrendingPosting(int offset, int size) {
+        // TODO : fetch join + pageable 함께 구현
+        Pageable pageable = PageRequest.of(offset, size, Sort.by("likeCount").descending());
+        return postingRepository.findAll(pageable).getContent();
     }
 
     @Transactional(readOnly = true)

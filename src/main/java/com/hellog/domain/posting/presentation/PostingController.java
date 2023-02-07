@@ -31,8 +31,11 @@ public class PostingController {
     @ApiOperation("트렌딩 알고리즘에 맞는 게시물 리스트를 조회합니다")
     @GetMapping("/trending")
     @ResponseStatus(HttpStatus.OK)
-    public List<Posting> getTrendingPostings() {
-        return postingService.getTrendingPosting();
+    public List<Posting> getTrendingPostings(
+            @RequestParam int offset,
+            @RequestParam int size
+    ) {
+        return postingService.getTrendingPosting(offset, size);
     }
 
     @ApiOperation("포스팅 id로 포스팅을 조회합니다")
