@@ -1,8 +1,8 @@
-package com.hellog.global.interceptor;
+package com.hellog.global.auth.interceptor;
 
 import com.hellog.domain.user.domain.entity.User;
 import com.hellog.domain.user.service.UserService;
-import com.hellog.global.annotation.AuthenticationCheck;
+import com.hellog.global.auth.annotation.AuthenticationCheck;
 import com.hellog.global.exception.global.InvalidTokenException;
 import com.hellog.global.lib.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;

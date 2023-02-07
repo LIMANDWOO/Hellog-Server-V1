@@ -10,7 +10,7 @@ import com.hellog.domain.posting.presentation.dto.request.UpdatePostingRequest;
 import com.hellog.domain.posting.presentation.dto.response.PostingResponse;
 import com.hellog.domain.posting.service.PostingService;
 import com.hellog.domain.user.domain.entity.User;
-import com.hellog.global.annotation.AuthenticationCheck;
+import com.hellog.global.auth.annotation.AuthenticationCheck;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

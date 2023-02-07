@@ -1,4 +1,4 @@
-package com.hellog.global.annotation;
+package com.hellog.global.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

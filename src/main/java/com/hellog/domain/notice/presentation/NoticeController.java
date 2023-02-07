@@ -5,7 +5,7 @@ import com.hellog.domain.notice.presentation.dto.request.CreateNoticeRequest;
 import com.hellog.domain.notice.presentation.dto.request.UpdateNoticeRequest;
 import com.hellog.domain.notice.service.NoticeService;
 import com.hellog.domain.user.domain.entity.User;
-import com.hellog.global.annotation.AuthenticationCheck;
+import com.hellog.global.auth.annotation.AuthenticationCheck;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
